@@ -10,7 +10,7 @@ import (
 func Tokenize(s string) []blocks.Token {
   var tokens []blocks.Token
 
-  re := regexp.MustCompile(`^( {0,3})(#{1,6})([ \t]+)`)
+  re := regexp.MustCompile(`^( {0,3})(#{1,6})([ \t]+|$)`)
   if match := re.Find([]byte(s)); match != nil {
     hashRe := regexp.MustCompile(`#{1,6}`)
     endingRe := regexp.MustCompile(` [# ]+$`)

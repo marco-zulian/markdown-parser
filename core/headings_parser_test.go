@@ -17,7 +17,6 @@ func TestHeadersMustHaveOneToSixHashesAtBeggining(t *testing.T) {
 		{"#### Heading", blocks.NewHeaderToken("Heading", 4)},
 		{"##### Heading", blocks.NewHeaderToken("Heading", 5)},
 		{"###### Heading", blocks.NewHeaderToken("Heading", 6)},
-    {"####### Heading", blocks.NewParagraphBlock("####### Heading")},
 	}
 
 	for _, test := range tests {
@@ -89,6 +88,21 @@ func TestUpToThreeSpacesOfIdentationAreAllowedOnHeadings(t *testing.T) {
   for _, test := range tests {
     if result := Tokenize(test.input); result[0] != test.want {
       t.Errorf("TestUpToThreeSpacesOfIdentationAreAllowedOnHeadings(%s) = %q, want %q", test.input, result, test.want)
+    }
+  }
+}
+
+func TestHeadingsMightBeEmpty(t *testing.T) {
+  var tests = []struct {
+    input string
+    want blocks.Token
+  }{
+    {"##", blocks.NewHeaderToken("", 2)},
+  }
+
+  for _, test := range tests {
+    if result := Tokenize(test.input); result[0] != test.want {
+      t.Errorf("TestHeadingMightBeEmpty(%s) = %q, want %q", test.input, result, test.want)
     }
   }
 }
