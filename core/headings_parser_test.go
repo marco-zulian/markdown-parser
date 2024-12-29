@@ -97,12 +97,38 @@ func TestHeadingsMightBeEmpty(t *testing.T) {
     input string
     want blocks.Token
   }{
-    {"##", blocks.NewHeaderToken("", 2)},
+    {"## ", blocks.NewHeaderToken("", 2)},
+    {"#", blocks.NewHeaderToken("", 1)},
+    {"### ###", blocks.NewHeaderToken("", 3)},
   }
 
   for _, test := range tests {
     if result := Tokenize(test.input); result[0] != test.want {
       t.Errorf("TestHeadingMightBeEmpty(%s) = %q, want %q", test.input, result, test.want)
+    }
+  }
+}
+
+func TestHeadingsClosingSequencesAreIgnored(t *testing.T) {
+  var tests = []struct {
+    input string
+    want blocks.Token
+  }{
+    {"## foo ##", blocks.NewHeaderToken("foo", 2)},
+    {"  ###   bar    ###", blocks.NewHeaderToken("bar", 3)},
+    {"# foo ##################################", blocks.NewHeaderToken("foo", 1)},
+    {"##### foo ##", blocks.NewHeaderToken("foo", 5)},
+    {"### foo ###     ", blocks.NewHeaderToken("foo", 3)},
+    {"### foo ### b", blocks.NewHeaderToken("foo ### b", 3)},
+    {"# foo#", blocks.NewHeaderToken("foo#", 1)},
+    {"### foo \\###", blocks.NewHeaderToken("foo \\###", 3)},
+    {"## foo #\\##", blocks.NewHeaderToken("foo #\\##", 2)},
+    {"# foo \\#", blocks.NewHeaderToken("foo \\#", 1)},
+  }
+
+  for _, test := range tests {
+    if result := Tokenize(test.input); result[0] != test.want {
+      t.Errorf("TestHeadingsClosingSequencesAreIgnored(%s) = %q, want %q", test.input, result, test.want)
     }
   }
 }
