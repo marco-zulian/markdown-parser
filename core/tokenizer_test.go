@@ -2,14 +2,18 @@ package core
 
 import (
 	"testing"
+
+	"github.com/marco-zulian/markdown-parser/blocks"
 )
 
 func TestTokenizesHeaders(t *testing.T) {
 	var tests = []struct {
 		input string
-		want  Token
+		want  blocks.Token
 	}{
-		{"#Heading", NewHeaderToken("Heading", 1)},
+		{"# Heading", blocks.NewHeaderToken("Heading", 1)},
+		{"## Heading", blocks.NewHeaderToken("Heading", 2)},
+		{"### Heading", blocks.NewHeaderToken("Heading", 3)},
 	}
 
 	for _, test := range tests {
