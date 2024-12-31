@@ -19,7 +19,7 @@ func TestParsesBreaksWithOnlyThreeCorrectTypesOfCharacter(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		if result := Blockize(test.input); result[0] != test.want {
+		if result := Tokenize(test.input); result[0] != test.want {
 			t.Errorf("TestParsesBreaksWithOnlyThreeCorrectTypesOfCharacter(%s) = %q, want %q", test.input, result, test.want)
 		}
 	}
@@ -37,7 +37,7 @@ func TestAtLeastThreeCharactersShouldAppear(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		if result := Blockize(test.input); result[0] != test.want {
+		if result := Tokenize(test.input); result[0] != test.want {
 			t.Errorf("TestAtLeastThreeCharactersShouldAppear(%s) = %q, want %q", test.input, result, test.want)
 		}
 	}
@@ -55,7 +55,7 @@ func TestShouldAllowSpacesAndTabsBetweenCharacters(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		if result := Blockize(test.input); result[0] != test.want {
+		if result := Tokenize(test.input); result[0] != test.want {
 			t.Errorf("TestShouldAllowSpacesAndTabsBetweenCharacters(%s) = %q, want %q", test.input, result, test.want)
 		}
 	}
@@ -73,7 +73,7 @@ func TestShouldOnlyMatchWhenOnlyTheSameSpecialCharacterAppears(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		if result := Blockize(test.input); result[0] != test.want {
+		if result := Tokenize(test.input); result[0] != test.want {
 			t.Errorf("TestShouldOnlyMatchWhenOnlyTheSameSpecialCharacterAppears(%s) = %q, want %q", test.input, result, test.want)
 		}
 	}
@@ -87,11 +87,11 @@ func TestShouldAllowUpToThreeSpacesOfIdentation(t *testing.T) {
 		{" ***", blocks.NewThematicBreakBlock()},
 		{"  ---", blocks.NewThematicBreakBlock()},
 		{"   ___", blocks.NewThematicBreakBlock()},
-		{"    ***", blocks.NewParagraphBlock("    ***")},
+		{"    ***", blocks.NewCodeBlock("***")},
 	}
 
 	for _, test := range tests {
-		if result := Blockize(test.input); result[0] != test.want {
+		if result := Tokenize(test.input); result[0] != test.want {
 			t.Errorf("TestShouldAllowUpToThreeSpacesOfIdentation(%s) = %q, want %q", test.input, result, test.want)
 		}
 	}

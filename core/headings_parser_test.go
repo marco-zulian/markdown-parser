@@ -20,8 +20,8 @@ func TestHeadersMustHaveOneToSixHashesAtBeggining(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		if result := Blockize(test.input); result[0] != test.want {
-			t.Errorf("TestBlockizesHeaders(%s) = %q, want %q", test.input, result, test.want)
+		if result := Tokenize(test.input); result[0] != test.want {
+			t.Errorf("TestTokenizesHeaders(%s) = %q, want %q", test.input, result, test.want)
 		}
 	}
 }
@@ -37,7 +37,7 @@ func TestHeadersMustHaveSpaceOrTabAfterHashes(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		if result := Blockize(test.input); result[0] != test.want {
+		if result := Tokenize(test.input); result[0] != test.want {
 			t.Errorf("TestHeadersMustHaveSpaceOrTabAfterHashes(%s) = %q, want %q", test.input, result, test.want)
 		}
 	}
@@ -52,7 +52,7 @@ func TestHeadersFirstHashMustNotBeEscaped(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		if result := Blockize(test.input); result[0] != test.want {
+		if result := Tokenize(test.input); result[0] != test.want {
 			t.Errorf("TestHeadersFirstHashMustNotBeEscaped(%s) = %q, want %q", test.input, result, test.want)
 		}
 	}
@@ -68,7 +68,7 @@ func TestSpacesAndTabsAtBeggingAndEndingOfHeadingsAreIgnored(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		if result := Blockize(test.input); result[0] != test.want {
+		if result := Tokenize(test.input); result[0] != test.want {
 			t.Errorf("TestSpacesAndTabsAtBegginingAndEndingOfHeadingsAreIgnored(%s) = %q, want %q", test.input, result, test.want)
 		}
 	}
@@ -82,11 +82,11 @@ func TestUpToThreeSpacesOfIdentationAreAllowedOnHeadings(t *testing.T) {
 		{" ### Heading", blocks.NewHeaderBlock("Heading", 3)},
 		{"  #### Heading", blocks.NewHeaderBlock("Heading", 4)},
 		{"   ###### Heading", blocks.NewHeaderBlock("Heading", 6)},
-		{"    # Heading", blocks.NewParagraphBlock("    # Heading")},
+		{"    # Heading", blocks.NewCodeBlock("# Heading")},
 	}
 
 	for _, test := range tests {
-		if result := Blockize(test.input); result[0] != test.want {
+		if result := Tokenize(test.input); result[0] != test.want {
 			t.Errorf("TestUpToThreeSpacesOfIdentationAreAllowedOnHeadings(%s) = %q, want %q", test.input, result, test.want)
 		}
 	}
@@ -103,7 +103,7 @@ func TestHeadingsMightBeEmpty(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		if result := Blockize(test.input); result[0] != test.want {
+		if result := Tokenize(test.input); result[0] != test.want {
 			t.Errorf("TestHeadingMightBeEmpty(%s) = %q, want %q", test.input, result, test.want)
 		}
 	}
@@ -127,7 +127,7 @@ func TestHeadingsClosingSequencesAreIgnored(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		if result := Blockize(test.input); result[0] != test.want {
+		if result := Tokenize(test.input); result[0] != test.want {
 			t.Errorf("TestHeadingsClosingSequencesAreIgnored(%s) = %q, want %q", test.input, result, test.want)
 		}
 	}
