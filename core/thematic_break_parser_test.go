@@ -9,18 +9,18 @@ import (
 func TestParsesBreaksWithOnlyThreeCorrectTypesOfCharacter(t *testing.T) {
 	var tests = []struct {
 		input string
-		want  blocks.Block
+		want  string 
 	}{
-		{"***", blocks.NewThematicBreakBlock()},
-		{"---", blocks.NewThematicBreakBlock()},
-		{"___", blocks.NewThematicBreakBlock()},
-		{"+++", blocks.NewParagraphBlock("+++")},
-		{"===", blocks.NewParagraphBlock("===")},
+		{"***", "Thematic break"},
+		{"---", "Thematic break"},
+		{"___", "Thematic break"}, 
+    {"+++", "Paragraph: +++"},
+    {"===", "Paragraph: ==="},
 	}
 
 	for _, test := range tests {
-		if result := Tokenize(test.input); result[0] != test.want {
-			t.Errorf("TestParsesBreaksWithOnlyThreeCorrectTypesOfCharacter(%s) = %q, want %q", test.input, result, test.want)
+		if result := blocks.GenerateBlock(test.input); result.String() != test.want {
+			t.Errorf("TestParsesBreaksWithOnlyThreeCorrectTypesOfCharacter(%s) = %s, want %s", test.input, result, test.want)
 		}
 	}
 }
@@ -28,17 +28,17 @@ func TestParsesBreaksWithOnlyThreeCorrectTypesOfCharacter(t *testing.T) {
 func TestAtLeastThreeCharactersShouldAppear(t *testing.T) {
 	var tests = []struct {
 		input string
-		want  blocks.Block
+		want  string
 	}{
-		{"**", blocks.NewParagraphBlock("**")},
-		{"--", blocks.NewParagraphBlock("--")},
-		{"__", blocks.NewParagraphBlock("__")},
-		{"_____________________________________", blocks.NewThematicBreakBlock()},
+    {"**", "Paragraph: **"},
+    {"--", "Paragraph: --"},
+    {"__", "Paragraph: __"},
+		{"_____________________________________", "Thematic break"},
 	}
 
 	for _, test := range tests {
-		if result := Tokenize(test.input); result[0] != test.want {
-			t.Errorf("TestAtLeastThreeCharactersShouldAppear(%s) = %q, want %q", test.input, result, test.want)
+		if result := blocks.GenerateBlock(test.input); result.String() != test.want {
+			t.Errorf("TestAtLeastThreeCharactersShouldAppear(%s) = %s, want %s", test.input, result, test.want)
 		}
 	}
 }
@@ -46,17 +46,17 @@ func TestAtLeastThreeCharactersShouldAppear(t *testing.T) {
 func TestShouldAllowSpacesAndTabsBetweenCharacters(t *testing.T) {
 	var tests = []struct {
 		input string
-		want  blocks.Block
+		want  string
 	}{
-		{" - - -", blocks.NewThematicBreakBlock()},
-		{" **  * ** * ** * **", blocks.NewThematicBreakBlock()},
-		{"-   -   -    -", blocks.NewThematicBreakBlock()},
-		{"- - - -    ", blocks.NewThematicBreakBlock()},
+		{" - - -", "Thematic break"},
+		{" **  * ** * ** * **", "Thematic break"},
+		{"-   -   -    -", "Thematic break"},
+		{"- - - -    ", "Thematic break"}, 
 	}
 
 	for _, test := range tests {
-		if result := Tokenize(test.input); result[0] != test.want {
-			t.Errorf("TestShouldAllowSpacesAndTabsBetweenCharacters(%s) = %q, want %q", test.input, result, test.want)
+		if result := blocks.GenerateBlock(test.input); result.String() != test.want {
+			t.Errorf("TestShouldAllowSpacesAndTabsBetweenCharacters(%s) = %s, want %s", test.input, result, test.want)
 		}
 	}
 }
@@ -64,17 +64,17 @@ func TestShouldAllowSpacesAndTabsBetweenCharacters(t *testing.T) {
 func TestShouldOnlyMatchWhenOnlyTheSameSpecialCharacterAppears(t *testing.T) {
 	var tests = []struct {
 		input string
-		want  blocks.Block
+		want  string
 	}{
-		{"_ _ _ _ a", blocks.NewParagraphBlock("_ _ _ _ a")},
-		{"a------", blocks.NewParagraphBlock("a------")},
-		{"---a---", blocks.NewParagraphBlock("---a---")},
-		{" *-*", blocks.NewParagraphBlock(" *-*")},
+      {"_ _ _ _ a", "Paragraph: _ _ _ _ a"},
+      {"a------", "Paragraph: a------"},
+      {"---a---", "Paragraph: ---a---"},
+      {" *-*", "Paragraph:  *-*"},
 	}
 
 	for _, test := range tests {
-		if result := Tokenize(test.input); result[0] != test.want {
-			t.Errorf("TestShouldOnlyMatchWhenOnlyTheSameSpecialCharacterAppears(%s) = %q, want %q", test.input, result, test.want)
+		if result := blocks.GenerateBlock(test.input); result.String() != test.want {
+			t.Errorf("TestShouldOnlyMatchWhenOnlyTheSameSpecialCharacterAppears(%s) = %s, want %s", test.input, result, test.want)
 		}
 	}
 }
@@ -82,17 +82,17 @@ func TestShouldOnlyMatchWhenOnlyTheSameSpecialCharacterAppears(t *testing.T) {
 func TestShouldAllowUpToThreeSpacesOfIdentation(t *testing.T) {
 	var tests = []struct {
 		input string
-		want  blocks.Block
+		want  string
 	}{
-		{" ***", blocks.NewThematicBreakBlock()},
-		{"  ---", blocks.NewThematicBreakBlock()},
-		{"   ___", blocks.NewThematicBreakBlock()},
-		{"    ***", blocks.NewCodeBlock("***")},
+		{" ***", "Thematic break"},
+		{"  ---", "Thematic break"}, 
+		{"   ___", "Thematic break"}, 
+    {"    ***", "Code: ***"},
 	}
 
 	for _, test := range tests {
-		if result := Tokenize(test.input); result[0] != test.want {
-			t.Errorf("TestShouldAllowUpToThreeSpacesOfIdentation(%s) = %q, want %q", test.input, result, test.want)
+		if result := blocks.GenerateBlock(test.input); result.String() != test.want {
+			t.Errorf("TestShouldAllowUpToThreeSpacesOfIdentation(%s) = %s, want %s", test.input, result, test.want)
 		}
 	}
 }

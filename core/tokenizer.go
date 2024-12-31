@@ -32,17 +32,3 @@ func generateBlockStructure(file *os.File) (*Document, error) {
   return &document, nil
 }
 
-//func Tokenize(s string) []blocks.Block {
-//	if match := codeRe.Find([]byte(s)); match != nil {
-//    result = append(result, blocks.NewCodeBlock(s[TAB_SIZE:])) // TODO Still placing paragraph
-//	} else if match := headingRe.Find([]byte(s)); match != nil {
-//		result = append(result, blocks.NewHeaderBlock(trimmedString, headingLevel))
-//	} else if match := thematicBreakRe.Find([]byte(strings.ReplaceAll(s, " ", ""))); match != nil {
-//		result = append(result, blocks.NewThematicBreakBlock())
-//	} else {
-//		result = append(result, blocks.NewParagraphBlock(s))
-//	}
-//
-//	return result 
-//}
-

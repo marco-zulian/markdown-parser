@@ -16,7 +16,7 @@ func (header *HeaderBlock) GetContent() *string {
 }
 
 func (header *HeaderBlock) String() string {
-  return fmt.Sprintf("Header: %s", header.content)
+  return fmt.Sprintf("Header %d: %s", header.Level, header.content)
 }
 
 func (header *HeaderBlock) CanConsume(line string) bool {

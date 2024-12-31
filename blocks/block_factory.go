@@ -9,7 +9,7 @@ func GenerateBlock(line string) Block {
 
   var blockTypeRegexs = map[BlockType]*regexp.Regexp{
     Header        : regexp.MustCompile(`^( {0,3})(#{1,6})([ \t]+|$)`),
-    ThematicBreak : regexp.MustCompile(`^((\*{3,})|(-{3,})|(_{3,}))$`),
+    ThematicBreak : regexp.MustCompile(`^( {0,3})((\*[ \*]*\*[ \*]*\*[ \*]*)|(-[ -]*-[ -]*-[ -]*)|(_[ _]*_[ _]*_[ _]*))$`),
     Code          : regexp.MustCompile(`^ {4,}`),
   }
 
@@ -47,7 +47,7 @@ func NewHeaderBlock(line string) *HeaderBlock {
 
 func NewCodeBlock(line string) *CodeBlock {
 	return &CodeBlock{
-		content: line,
+    content: line[4:],
     isOpen:  true,
 	}
 }
@@ -59,7 +59,6 @@ func NewParagraphBlock(content string) *ParagraphBlock {
 }
 
 func NewThematicBreakBlock(line string) *ThematicBreakBlock {
-  print("tb")
   return &ThematicBreakBlock{}
 }
 

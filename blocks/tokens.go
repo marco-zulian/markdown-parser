@@ -22,6 +22,7 @@ type Block interface {
   CanConsume(line string) bool
   Consume(line string)
   CanExtend() bool
+  String() string
 }
 
 
