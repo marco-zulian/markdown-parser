@@ -1,19 +1,17 @@
 package blocks
 
 type ParagraphBlock struct {
-	tokenType TokenType
-	content   string
+	content string
 }
 
 func NewParagraphBlock(content string) ParagraphBlock {
 	return ParagraphBlock{
-		tokenType: Paragraph,
-		content:   content,
+		content: content,
 	}
 }
 
-func (paragraph ParagraphBlock) GetTokenType() TokenType {
-	return paragraph.tokenType
+func (paragraph ParagraphBlock) GetBlockType() BlockType {
+	return Paragraph
 }
 
 func (paragraph ParagraphBlock) GetContent() *string {

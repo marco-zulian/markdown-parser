@@ -1,19 +1,15 @@
 package blocks
 
-type ThematicBreakBlock struct {
-  tokenType TokenType
-}
+type ThematicBreakBlock struct{}
 
 func NewThematicBreakBlock() ThematicBreakBlock {
-  return ThematicBreakBlock{
-    tokenType: ThematicBreak,
-  }
+	return ThematicBreakBlock{}
 }
 
-func (thematicBreak ThematicBreakBlock) GetTokenType() TokenType {
-  return thematicBreak.tokenType
+func (thematicBreak ThematicBreakBlock) GetBlockType() BlockType {
+	return ThematicBreak
 }
 
 func (thematicBreak ThematicBreakBlock) GetContent() *string {
-  return nil
+	return nil
 }

@@ -9,19 +9,19 @@ import (
 func TestHeadersMustHaveOneToSixHashesAtBeggining(t *testing.T) {
 	var tests = []struct {
 		input string
-		want  blocks.Token
+		want  blocks.Block
 	}{
-		{"# Heading", blocks.NewHeaderToken("Heading", 1)},
-		{"## Heading", blocks.NewHeaderToken("Heading", 2)},
-		{"### Heading", blocks.NewHeaderToken("Heading", 3)},
-		{"#### Heading", blocks.NewHeaderToken("Heading", 4)},
-		{"##### Heading", blocks.NewHeaderToken("Heading", 5)},
-		{"###### Heading", blocks.NewHeaderToken("Heading", 6)},
+		{"# Heading", blocks.NewHeaderBlock("Heading", 1)},
+		{"## Heading", blocks.NewHeaderBlock("Heading", 2)},
+		{"### Heading", blocks.NewHeaderBlock("Heading", 3)},
+		{"#### Heading", blocks.NewHeaderBlock("Heading", 4)},
+		{"##### Heading", blocks.NewHeaderBlock("Heading", 5)},
+		{"###### Heading", blocks.NewHeaderBlock("Heading", 6)},
 	}
 
 	for _, test := range tests {
-		if result := Tokenize(test.input); result[0] != test.want {
-			t.Errorf("TestTokenizesHeaders(%s) = %q, want %q", test.input, result, test.want)
+		if result := Blockize(test.input); result[0] != test.want {
+			t.Errorf("TestBlockizesHeaders(%s) = %q, want %q", test.input, result, test.want)
 		}
 	}
 }
@@ -29,106 +29,106 @@ func TestHeadersMustHaveOneToSixHashesAtBeggining(t *testing.T) {
 func TestHeadersMustHaveSpaceOrTabAfterHashes(t *testing.T) {
 	var tests = []struct {
 		input string
-		want  blocks.Token
+		want  blocks.Block
 	}{
 		{"#Heading", blocks.NewParagraphBlock("#Heading")},
-		{"# Heading", blocks.NewHeaderToken("Heading", 1)},
-		{"##    Heading", blocks.NewHeaderToken("Heading", 2)},
+		{"# Heading", blocks.NewHeaderBlock("Heading", 1)},
+		{"##    Heading", blocks.NewHeaderBlock("Heading", 2)},
 	}
 
 	for _, test := range tests {
-		if result := Tokenize(test.input); result[0] != test.want {
+		if result := Blockize(test.input); result[0] != test.want {
 			t.Errorf("TestHeadersMustHaveSpaceOrTabAfterHashes(%s) = %q, want %q", test.input, result, test.want)
 		}
 	}
 }
 
 func TestHeadersFirstHashMustNotBeEscaped(t *testing.T) {
-  var tests = []struct {
-    input string
-    want blocks.Token
-  }{
-    {"\\# Heading", blocks.NewParagraphBlock("\\# Heading")},
-  }
+	var tests = []struct {
+		input string
+		want  blocks.Block
+	}{
+		{"\\# Heading", blocks.NewParagraphBlock("\\# Heading")},
+	}
 
-  for _, test := range tests {
-    if result := Tokenize(test.input); result[0] != test.want {
-      t.Errorf("TestHeadersFirstHashMustNotBeEscaped(%s) = %q, want %q", test.input, result, test.want)
-    }
-  }
+	for _, test := range tests {
+		if result := Blockize(test.input); result[0] != test.want {
+			t.Errorf("TestHeadersFirstHashMustNotBeEscaped(%s) = %q, want %q", test.input, result, test.want)
+		}
+	}
 }
 
 func TestSpacesAndTabsAtBeggingAndEndingOfHeadingsAreIgnored(t *testing.T) {
-  var tests = []struct {
-    input string
-    want blocks.Token
-  }{
-    {"#      Heading        ", blocks.NewHeaderToken("Heading", 1)},
-    {"##                Heading", blocks.NewHeaderToken("Heading", 2)},
-  }
+	var tests = []struct {
+		input string
+		want  blocks.Block
+	}{
+		{"#      Heading        ", blocks.NewHeaderBlock("Heading", 1)},
+		{"##                Heading", blocks.NewHeaderBlock("Heading", 2)},
+	}
 
-  for _, test := range tests {
-    if result := Tokenize(test.input); result[0] != test.want {
-      t.Errorf("TestSpacesAndTabsAtBegginingAndEndingOfHeadingsAreIgnored(%s) = %q, want %q", test.input, result, test.want)
-    }
-  }
+	for _, test := range tests {
+		if result := Blockize(test.input); result[0] != test.want {
+			t.Errorf("TestSpacesAndTabsAtBegginingAndEndingOfHeadingsAreIgnored(%s) = %q, want %q", test.input, result, test.want)
+		}
+	}
 }
 
 func TestUpToThreeSpacesOfIdentationAreAllowedOnHeadings(t *testing.T) {
-  var tests = []struct {
-    input string
-    want blocks.Token
-  }{
-    {" ### Heading", blocks.NewHeaderToken("Heading", 3)},
-    {"  #### Heading", blocks.NewHeaderToken("Heading", 4)},
-    {"   ###### Heading", blocks.NewHeaderToken("Heading", 6)},
-    {"    # Heading", blocks.NewParagraphBlock("    # Heading")},
-  }
-  
-  for _, test := range tests {
-    if result := Tokenize(test.input); result[0] != test.want {
-      t.Errorf("TestUpToThreeSpacesOfIdentationAreAllowedOnHeadings(%s) = %q, want %q", test.input, result, test.want)
-    }
-  }
+	var tests = []struct {
+		input string
+		want  blocks.Block
+	}{
+		{" ### Heading", blocks.NewHeaderBlock("Heading", 3)},
+		{"  #### Heading", blocks.NewHeaderBlock("Heading", 4)},
+		{"   ###### Heading", blocks.NewHeaderBlock("Heading", 6)},
+		{"    # Heading", blocks.NewParagraphBlock("    # Heading")},
+	}
+
+	for _, test := range tests {
+		if result := Blockize(test.input); result[0] != test.want {
+			t.Errorf("TestUpToThreeSpacesOfIdentationAreAllowedOnHeadings(%s) = %q, want %q", test.input, result, test.want)
+		}
+	}
 }
 
 func TestHeadingsMightBeEmpty(t *testing.T) {
-  var tests = []struct {
-    input string
-    want blocks.Token
-  }{
-    {"## ", blocks.NewHeaderToken("", 2)},
-    {"#", blocks.NewHeaderToken("", 1)},
-    {"### ###", blocks.NewHeaderToken("", 3)},
-  }
+	var tests = []struct {
+		input string
+		want  blocks.Block
+	}{
+		{"## ", blocks.NewHeaderBlock("", 2)},
+		{"#", blocks.NewHeaderBlock("", 1)},
+		{"### ###", blocks.NewHeaderBlock("", 3)},
+	}
 
-  for _, test := range tests {
-    if result := Tokenize(test.input); result[0] != test.want {
-      t.Errorf("TestHeadingMightBeEmpty(%s) = %q, want %q", test.input, result, test.want)
-    }
-  }
+	for _, test := range tests {
+		if result := Blockize(test.input); result[0] != test.want {
+			t.Errorf("TestHeadingMightBeEmpty(%s) = %q, want %q", test.input, result, test.want)
+		}
+	}
 }
 
 func TestHeadingsClosingSequencesAreIgnored(t *testing.T) {
-  var tests = []struct {
-    input string
-    want blocks.Token
-  }{
-    {"## foo ##", blocks.NewHeaderToken("foo", 2)},
-    {"  ###   bar    ###", blocks.NewHeaderToken("bar", 3)},
-    {"# foo ##################################", blocks.NewHeaderToken("foo", 1)},
-    {"##### foo ##", blocks.NewHeaderToken("foo", 5)},
-    {"### foo ###     ", blocks.NewHeaderToken("foo", 3)},
-    {"### foo ### b", blocks.NewHeaderToken("foo ### b", 3)},
-    {"# foo#", blocks.NewHeaderToken("foo#", 1)},
-    {"### foo \\###", blocks.NewHeaderToken("foo \\###", 3)},
-    {"## foo #\\##", blocks.NewHeaderToken("foo #\\##", 2)},
-    {"# foo \\#", blocks.NewHeaderToken("foo \\#", 1)},
-  }
+	var tests = []struct {
+		input string
+		want  blocks.Block
+	}{
+		{"## foo ##", blocks.NewHeaderBlock("foo", 2)},
+		{"  ###   bar    ###", blocks.NewHeaderBlock("bar", 3)},
+		{"# foo ##################################", blocks.NewHeaderBlock("foo", 1)},
+		{"##### foo ##", blocks.NewHeaderBlock("foo", 5)},
+		{"### foo ###     ", blocks.NewHeaderBlock("foo", 3)},
+		{"### foo ### b", blocks.NewHeaderBlock("foo ### b", 3)},
+		{"# foo#", blocks.NewHeaderBlock("foo#", 1)},
+		{"### foo \\###", blocks.NewHeaderBlock("foo \\###", 3)},
+		{"## foo #\\##", blocks.NewHeaderBlock("foo #\\##", 2)},
+		{"# foo \\#", blocks.NewHeaderBlock("foo \\#", 1)},
+	}
 
-  for _, test := range tests {
-    if result := Tokenize(test.input); result[0] != test.want {
-      t.Errorf("TestHeadingsClosingSequencesAreIgnored(%s) = %q, want %q", test.input, result, test.want)
-    }
-  }
+	for _, test := range tests {
+		if result := Blockize(test.input); result[0] != test.want {
+			t.Errorf("TestHeadingsClosingSequencesAreIgnored(%s) = %q, want %q", test.input, result, test.want)
+		}
+	}
 }

@@ -1,15 +1,15 @@
 package blocks
 
-type TokenType string
+type BlockType string
 
 const (
-	Paragraph     TokenType = "paragraph"
-	Header        TokenType = "header"
-  ThematicBreak TokenType = "break"
-  IndentedCode  TokenType = "indented_code"
+	Paragraph     BlockType = "paragraph"
+	Header        BlockType = "header"
+	ThematicBreak BlockType = "break"
+	IndentedCode  BlockType = "indented_code"
 )
 
-type Token interface {
-	GetTokenType() TokenType
+type Block interface {
+	GetBlockType() BlockType
 	GetContent() *string
 }

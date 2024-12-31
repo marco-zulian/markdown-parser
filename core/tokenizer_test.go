@@ -6,19 +6,19 @@ import (
 	"github.com/marco-zulian/markdown-parser/blocks"
 )
 
-func TestTokenizesHeaders(t *testing.T) {
+func TestBlockizesHeaders(t *testing.T) {
 	var tests = []struct {
 		input string
-		want  blocks.Token
+		want  blocks.Block
 	}{
-		{"# Heading", blocks.NewHeaderToken("Heading", 1)},
-		{"## Heading", blocks.NewHeaderToken("Heading", 2)},
-		{"### Heading", blocks.NewHeaderToken("Heading", 3)},
+		{"# Heading", blocks.NewHeaderBlock("Heading", 1)},
+		{"## Heading", blocks.NewHeaderBlock("Heading", 2)},
+		{"### Heading", blocks.NewHeaderBlock("Heading", 3)},
 	}
 
 	for _, test := range tests {
-		if result := Tokenize(test.input); result[0] != test.want {
-			t.Errorf("TestTokenizesHeaders(%s) = %q, want %q", test.input, result, test.want)
+		if result := Blockize(test.input); result[0] != test.want {
+			t.Errorf("TestBlockizesHeaders(%s) = %q, want %q", test.input, result, test.want)
 		}
 	}
 }
