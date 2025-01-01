@@ -25,6 +25,7 @@ type Block interface {
   CanExtend() bool
   String() string
   IsOpen() bool
+  Close()
 }
 
 

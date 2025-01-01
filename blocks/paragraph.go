@@ -26,8 +26,8 @@ func (paragraph *ParagraphBlock) String() string {
 func (paragraph *ParagraphBlock) CanConsume(line string) bool {
   if !paragraph.isOpen { return false }
 
-  var blankLineRegex = regexp.MustCompile("^ *$")
-  if blankLineRegex.Match([]byte(line)) {
+  var paragraphEndingRegex = regexp.MustCompile("(^ *$)|(^( {0,3})(#{1,6})([ \t]+|$))")
+  if paragraphEndingRegex.Match([]byte(line)) {
     paragraph.isOpen = false
     return false
   }
@@ -45,4 +45,8 @@ func (paragraph *ParagraphBlock) CanExtend() bool {
 
 func (paragraph *ParagraphBlock) IsOpen() bool {
   return paragraph.isOpen
+}
+
+func (paragraph *ParagraphBlock) Close() {
+  return
 }

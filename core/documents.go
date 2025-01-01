@@ -35,7 +35,10 @@ func (document Document) GetContent() *string {
 
 func (document *Document) IngestLine(line string) {
   if len(document.blocks) == 0 { 
-    document.blocks = append(document.blocks, blocks.GenerateBlock(line)) 
+    block := blocks.GenerateBlock(line)
+    if block != nil {
+      document.blocks = append(document.blocks, block) 
+    }
     return
   }
 
@@ -54,7 +57,14 @@ func (document *Document) IngestLine(line string) {
   } else {
     openBlock.Consume(line)
   }
+}
 
+func (document *Document) Close() {
+  for _, block := range document.blocks {
+    block.Close()
+  }
+
+  document.isOpen = false
 }
 
 func isNewBlockStart(line string) bool {

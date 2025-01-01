@@ -30,6 +30,7 @@ func GenerateBlockStructure(inputStream io.Reader) (*Document, error) {
     document.IngestLine(line)
   }
 
+  document.Close()
   return &document, nil
 }
 

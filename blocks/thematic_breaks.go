@@ -31,3 +31,7 @@ func (thematicBreak *ThematicBreakBlock) CanExtend() bool {
 func (thematicBreak *ThematicBreakBlock) IsOpen() bool {
   return false
 }
+
+func (thematicBreak *ThematicBreakBlock) Close() {
+  return
+}

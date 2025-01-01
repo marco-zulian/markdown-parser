@@ -34,3 +34,7 @@ func (header *HeaderBlock) CanExtend() bool {
 func (header *HeaderBlock) IsOpen() bool {
   return false
 }
+
+func (header *HeaderBlock) Close() {
+  return
+}
