@@ -26,7 +26,7 @@ func (codeBlock *CodeBlock) CanConsume(line string) bool {
 }
 
 func (codeBlock *CodeBlock) Consume(line string) {
-  panic("WIP Code block")
+  codeBlock.content += "\n" + line[4:] 
 }
 
 func (codeBlock *CodeBlock) CanExtend() bool {

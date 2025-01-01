@@ -2,8 +2,6 @@ package core
 
 import (
   "testing"
-
-  "github.com/marco-zulian/markdown-parser/blocks"
 )
 
 func TestShouldDetectCodeBlocks(t *testing.T) {
@@ -11,12 +9,12 @@ func TestShouldDetectCodeBlocks(t *testing.T) {
     input string
     want  string
   }{
-    {"    a simple\n      indented code block", "Code: a simple\n  indented code block"}, 
+    {"mock_files/code.md", "Code: a simple\n  indented code block\n"}, 
   }
 
   for _, test := range tests {
-    if result := blocks.GenerateBlock(test.input); result.String() != test.want {
-      t.Errorf("TestShouldDetectCodeBlocks(%s) = %s, want %s", test.input, result, test.want)
+    if result, _ := Tokenize(test.input); *result.GetContent() != test.want {
+      t.Errorf("TestShouldDetectCodeBlocks(%s) = \n%q, want \n%q", test.input, *result.GetContent(), test.want)
     }
   }
 }

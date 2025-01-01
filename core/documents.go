@@ -55,13 +55,9 @@ func (document *Document) IngestLine(line string) {
 }
 
 func isNewBlockStart(line string) bool {
-  var blockTypeRegexs = map[blocks.BlockType]*regexp.Regexp{
-    blocks.Header        : regexp.MustCompile(`^( {0,3})(#{1,6})([ \t]+|$)`),
-    blocks.ThematicBreak : regexp.MustCompile(`^((\*{3,})|(-{3,})|(_{3,}))$`),
-    blocks.Code          : regexp.MustCompile(`^ {4,}`),
-  }
+  var blockTypeRegexs = map[blocks.BlockType]*regexp.Regexp{}
 
-  var processingOrder = []blocks.BlockType{blocks.Code, blocks.Header, blocks.ThematicBreak}
+  var processingOrder = []blocks.BlockType{}
   
   for _, blockType := range processingOrder {
     re, _ := blockTypeRegexs[blockType]
