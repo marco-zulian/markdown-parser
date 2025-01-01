@@ -2,6 +2,7 @@ package blocks
 
 import (
   "fmt"
+  "regexp"
 )
 
 type ParagraphBlock struct {
@@ -22,7 +23,15 @@ func (paragraph *ParagraphBlock) String() string {
 }
 
 func (paragraph *ParagraphBlock) CanConsume(line string) bool {
-  return false
+  if !paragraph.isOpen { return false }
+
+  var blankLineRegex = regexp.MustCompile("^ *$")
+  if blankLineRegex.Match([]byte(line)) {
+    paragraph.isOpen = false
+    return false
+  }
+
+  return true
 }
 
 func (paragraph *ParagraphBlock) Consume(line string) {
@@ -30,5 +39,9 @@ func (paragraph *ParagraphBlock) Consume(line string) {
 }
 
 func (paragraph *ParagraphBlock) CanExtend() bool {
-  return true 
+  return paragraph.isOpen 
+}
+
+func (paragraph *ParagraphBlock) IsOpen() bool {
+  return paragraph.isOpen
 }

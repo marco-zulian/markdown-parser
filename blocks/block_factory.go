@@ -5,13 +5,15 @@ import (
   "strings"
 )
 
-func GenerateBlock(line string) Block {
+var blockTypeRegexs = map[BlockType]*regexp.Regexp{
+  Header        : regexp.MustCompile(`^( {0,3})(#{1,6})([ \t]+|$)`),
+  ThematicBreak : regexp.MustCompile(`^( {0,3})((\*[ \*]*\*[ \*]*\*[ \*]*)|(-[ -]*-[ -]*-[ -]*)|(_[ _]*_[ _]*_[ _]*))$`),
+  Code          : regexp.MustCompile(`^ {4,}|\t`),
+  BlankLine     : regexp.MustCompile(`^ *$`),
+}
 
-  var blockTypeRegexs = map[BlockType]*regexp.Regexp{
-    Header        : regexp.MustCompile(`^( {0,3})(#{1,6})([ \t]+|$)`),
-    ThematicBreak : regexp.MustCompile(`^( {0,3})((\*[ \*]*\*[ \*]*\*[ \*]*)|(-[ -]*-[ -]*-[ -]*)|(_[ _]*_[ _]*_[ _]*))$`),
-    Code          : regexp.MustCompile(`^ {4,}`),
-  }
+func GenerateBlock(line string) Block {
+  if blockTypeRegexs[BlankLine].Match([]byte(line)) { return nil }
 
   var blockTypeConstructors = map[BlockType]func(string) Block {
     Header        : func(line string) Block { return NewHeaderBlock(line) },
@@ -46,10 +48,10 @@ func NewHeaderBlock(line string) *HeaderBlock {
 }
 
 func NewCodeBlock(line string) *CodeBlock {
-	return &CodeBlock{
-    content: line[4:],
-    isOpen:  true,
-	}
+  if strings.HasPrefix(line, "\t") { return &CodeBlock{ content: line[1:], isOpen:  true } 
+  } else if strings.HasPrefix(line, " \t") { return &CodeBlock{ content: line[2:], isOpen: true }
+  } else if strings.HasPrefix(line, "  \t") { return &CodeBlock{ content: line[3:], isOpen: true }
+  } else { return &CodeBlock{ content: line[4:], isOpen:  true } }
 }
 
 func NewParagraphBlock(content string) *ParagraphBlock {

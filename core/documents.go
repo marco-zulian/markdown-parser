@@ -47,7 +47,10 @@ func (document *Document) IngestLine(line string) {
   }
 
   if !openBlock.CanExtend() || isNewBlockStart(line) {
-    document.blocks = append(document.blocks, blocks.GenerateBlock(line)) 
+    block := blocks.GenerateBlock(line)
+    if block != nil {
+      document.blocks = append(document.blocks, block) 
+    }
   } else {
     openBlock.Consume(line)
   }

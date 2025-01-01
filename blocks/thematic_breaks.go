@@ -27,3 +27,7 @@ func (thematicBreak *ThematicBreakBlock) Consume(line string) {
 func (thematicBreak *ThematicBreakBlock) CanExtend() bool {
   return false 
 }
+
+func (thematicBreak *ThematicBreakBlock) IsOpen() bool {
+  return false
+}

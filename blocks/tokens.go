@@ -14,6 +14,7 @@ const (
   ListItem      BlockType = "list_item"
   Image         BlockType = "image"
   LineBreak     BlockType = "line_break"
+  BlankLine     BlockType = "blank_line"
 )
 
 type Block interface {
@@ -23,6 +24,7 @@ type Block interface {
   Consume(line string)
   CanExtend() bool
   String() string
+  IsOpen() bool
 }
 
 

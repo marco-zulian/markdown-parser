@@ -3,6 +3,7 @@ package core
 import (
   "fmt"
   "os"
+  "io"
   "bufio"
 )
 
@@ -17,13 +18,13 @@ func Tokenize(filePath string) (*Document, error) {
     return nil, err
   }
   
-  return generateBlockStructure(file) 
+  return GenerateBlockStructure(file) 
 }
 
-func generateBlockStructure(file *os.File) (*Document, error) {
+func GenerateBlockStructure(inputStream io.Reader) (*Document, error) {
   document := NewDocument()
 
-  scanner := bufio.NewScanner(file)
+  scanner := bufio.NewScanner(inputStream)
   for scanner.Scan() {
     line := scanner.Text()
     document.IngestLine(line)

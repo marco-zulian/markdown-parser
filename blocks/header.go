@@ -30,3 +30,7 @@ func (header *HeaderBlock) Consume(line string) {
 func (header *HeaderBlock) CanExtend() bool {
   return false
 }
+
+func (header *HeaderBlock) IsOpen() bool {
+  return false
+}

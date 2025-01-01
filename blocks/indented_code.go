@@ -21,8 +21,8 @@ func (codeBlock CodeBlock) String() string {
   return fmt.Sprintf("Code: %s", codeBlock.content)
 }
 
-func (codeBlock *CodeBlock) CanConsume(line string) bool {
-  return false
+func (codeBlock *CodeBlock) CanConsume(line string) bool { 
+  return blockTypeRegexs[Code].Match([]byte(line))
 }
 
 func (codeBlock *CodeBlock) Consume(line string) {
@@ -33,3 +33,6 @@ func (codeBlock *CodeBlock) CanExtend() bool {
   return true 
 }
 
+func (codeBlock *CodeBlock) IsOpen() bool {
+  return codeBlock.isOpen 
+}
