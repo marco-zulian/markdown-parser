@@ -4,14 +4,6 @@ import "fmt"
 
 type ThematicBreakBlock struct{}
 
-func (thematicBreak *ThematicBreakBlock) GetBlockType() BlockType {
-	return ThematicBreak
-}
-
-func (thematicBreak *ThematicBreakBlock) GetContent() *string {
-	return nil
-}
-
 func (thematicBreak *ThematicBreakBlock) String() string {
   return fmt.Sprintf("Thematic break") 
 }

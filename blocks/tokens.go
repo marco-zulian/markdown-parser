@@ -7,6 +7,7 @@ const (
 	Header        BlockType = "header"
 	ThematicBreak BlockType = "break"
 	Code          BlockType = "code"
+  FencedCode    BlockType = "fenced_code"
   Html          BlockType = "html"
   Link          BlockType = "link"
   BlockQuote    BlockType = "blockquote"
@@ -18,8 +19,6 @@ const (
 )
 
 type Block interface {
-	GetBlockType() BlockType
-	GetContent() *string
   CanConsume(line string) bool
   Consume(line string)
   CanExtend() bool

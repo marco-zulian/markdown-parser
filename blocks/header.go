@@ -7,14 +7,6 @@ type HeaderBlock struct {
 	Level   int
 }
 
-func (header *HeaderBlock) GetBlockType() BlockType {
-	return Header
-}
-
-func (header *HeaderBlock) GetContent() *string {
-	return &header.content
-}
-
 func (header *HeaderBlock) String() string {
   return fmt.Sprintf("Header %d: %s", header.Level, header.content)
 }

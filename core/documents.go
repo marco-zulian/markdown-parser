@@ -19,10 +19,6 @@ func NewDocument() Document {
   }
 }
 
-func (document Document) GetBlockType() blocks.BlockType {
-  return blocks.Document
-}
-
 func (document Document) GetContent() *string {
   var content string
 

@@ -10,6 +10,7 @@ var blockTypeRegexs = map[BlockType]*regexp.Regexp{
   ThematicBreak : regexp.MustCompile(`^( {0,3})((\*[ \*]*\*[ \*]*\*[ \*]*)|(-[ -]*-[ -]*-[ -]*)|(_[ _]*_[ _]*_[ _]*))$`),
   Code          : regexp.MustCompile(`^ {4,}|\t`),
   BlankLine     : regexp.MustCompile(`^ *$`),
+  FencedCode    : regexp.MustCompile("^`{3,}|~{3,}"),
 }
 
 func GenerateBlock(line string) Block {
@@ -19,9 +20,10 @@ func GenerateBlock(line string) Block {
     Header        : func(line string) Block { return NewHeaderBlock(line) },
     ThematicBreak : func(line string) Block { return NewThematicBreakBlock(line) },
     Code          : func(line string) Block { return NewCodeBlock(line) },
+    FencedCode    : func(line string) Block { return NewFencedCodeBlock(line) },
   }
 
-  var processingOrder = []BlockType{Code, Header, ThematicBreak}
+  var processingOrder = []BlockType{Code, Header, ThematicBreak, FencedCode}
   
   for _, blockType := range processingOrder {
     re, _ := blockTypeRegexs[blockType]
@@ -65,3 +67,12 @@ func NewThematicBreakBlock(line string) *ThematicBreakBlock {
   return &ThematicBreakBlock{}
 }
 
+func NewFencedCodeBlock(line string) *FencedCodeBlock {
+  return &FencedCodeBlock {
+    content: "",
+    delimiter: string(line[0]),
+    info: "",
+    isOpen: true,
+    tabs: 0,
+  }
+}

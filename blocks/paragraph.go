@@ -11,14 +11,6 @@ type ParagraphBlock struct {
   isOpen  bool
 }
 
-func (paragraph *ParagraphBlock) GetBlockType() BlockType {
-	return Paragraph
-}
-
-func (paragraph *ParagraphBlock) GetContent() *string {
-	return &paragraph.content
-}
-
 func (paragraph *ParagraphBlock) String() string {
   return fmt.Sprintf("Paragraph: %s", paragraph.content)
 }

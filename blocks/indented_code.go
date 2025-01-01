@@ -10,14 +10,6 @@ type CodeBlock struct {
   isOpen  bool
 }
 
-func (codeBlock CodeBlock) GetBlockType() BlockType {
-	return Code
-}
-
-func (codeBlock CodeBlock) GetContent() *string {
-	return &codeBlock.content
-}
-
 func (codeBlock CodeBlock) String() string {
   return fmt.Sprintf("Code: %s", codeBlock.content)
 }
