@@ -56,7 +56,8 @@ func NewCodeBlock(line string) *CodeBlock {
 
 func NewParagraphBlock(content string) *ParagraphBlock {
 	return &ParagraphBlock{
-		content: content,
+		content: strings.TrimLeft(content, " \t"),
+    isOpen: true,
 	}
 }
 

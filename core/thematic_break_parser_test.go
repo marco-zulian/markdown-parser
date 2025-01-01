@@ -69,7 +69,7 @@ func TestShouldOnlyMatchWhenOnlyTheSameSpecialCharacterAppears(t *testing.T) {
       {"_ _ _ _ a", "Paragraph: _ _ _ _ a"},
       {"a------", "Paragraph: a------"},
       {"---a---", "Paragraph: ---a---"},
-      {" *-*", "Paragraph:  *-*"},
+      {" *-*", "Paragraph: *-*"},
 	}
 
 	for _, test := range tests {

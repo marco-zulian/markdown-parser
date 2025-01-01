@@ -3,6 +3,7 @@ package blocks
 import (
   "fmt"
   "regexp"
+  "strings"
 )
 
 type ParagraphBlock struct {
@@ -35,7 +36,7 @@ func (paragraph *ParagraphBlock) CanConsume(line string) bool {
 }
 
 func (paragraph *ParagraphBlock) Consume(line string) {
-  paragraph.content += "\n" + line 
+  paragraph.content += "\n" + strings.TrimLeft(line, " \t") 
 }
 
 func (paragraph *ParagraphBlock) CanExtend() bool {
